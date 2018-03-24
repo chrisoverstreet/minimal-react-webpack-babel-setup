@@ -1,4 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+
+export const doIncrement = prevState => ({
+  counter: prevState.counter + 1,
+});
+
+export const doDecrement = prevState => ({
+  counter: prevState.counter - 1,
+});
 
 class App extends Component {
   constructor() {
@@ -6,22 +16,25 @@ class App extends Component {
 
     this.state = {
       counter: 0,
+      asyncCounters: null,
     };
 
     this.onIncrement = this.onIncrement.bind(this);
     this.onDecrement = this.onDecrement.bind(this);
   }
 
+  componentDidMount() {
+    axios.get('http://mydomain/counter')
+      .then(counter => this.setState({ asyncCounters: counter }))
+      .catch(error => console.log(error));
+  }
+
   onIncrement() {
-    this.setState(prevState => ({
-      counter: prevState.counter + 1,
-    }));
+    this.setState(doIncrement);
   }
 
   onDecrement() {
-    this.setState(prevState => ({
-      counter: prevState.counter - 1,
-    }));
+    this.setState(doDecrement);
   }
 
   render() {
@@ -30,7 +43,7 @@ class App extends Component {
     return (
       <div>
         <h1>My Counter</h1>
-        <p>{counter}</p>
+        <Counter counter={counter} />
 
         <button
           type="button"
@@ -49,5 +62,16 @@ class App extends Component {
     );
   }
 }
+
+export const Counter = ({ counter }) =>
+  <p>{counter}</p>;
+
+Counter.defaultProps = {
+  counter: 0,
+};
+
+Counter.propTypes = {
+  counter: PropTypes.number,
+};
 
 export default App;
