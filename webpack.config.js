@@ -3,16 +3,12 @@ const webpack = require('webpack');
 module.exports = {
   entry: [
     'react-hot-loader/patch',
-    './src/index.js'
+    './src/index.jsx'
   ],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
-      },{
-        test: /\.js$/,
         exclude: /node_modules/,
         use: ['babel-loader', 'eslint-loader']
       }
