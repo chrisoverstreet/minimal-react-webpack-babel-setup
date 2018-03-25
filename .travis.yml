@@ -7,4 +7,4 @@ install:
   - npm install
 
 script:
-  - npm test:unit && npm run test:snapshot
+  - npm test:unit && npm run test:snapshot && npm run test:cypress
